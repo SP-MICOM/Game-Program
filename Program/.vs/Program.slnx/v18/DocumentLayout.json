@@ -7,6 +7,12 @@
       "RelativeMoniker": "D:0:0:{53B474C2-71F2-405F-B4B5-2015D97B39A2}|Program.vcxproj|solutionrelative:Source.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{20A791F9-E446-4811-BCCD-19AAC7A42D8F}|..\\Class4th (Color System)\\Class4th (Color System).vcxproj|C:\\Users\\iheug\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\Game-Program\\Class4th (Color System)\\Source.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D1470A5-2DFB-4E78-9D16-AC9059287AA8}|..\\Class3th (File Input \u0026 Output)\\Class3th (File Input \u0026 Output).vcxproj|C:\\Users\\iheug\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\Game-Program\\Class3th (File Input \u0026 Output)\\Source.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stdio.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -27,7 +33,7 @@
               "RelativeDocumentMoniker": "Source.c",
               "ToolTip": "C:\\Users\\iheug\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\Game-Program\\Program\\Source.c",
               "RelativeToolTip": "Source.c",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD0AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2026-01-22T07:40:16.128Z",
               "IsPinned": true,
@@ -36,6 +42,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Source.c",
+              "DocumentMoniker": "C:\\Users\\iheug\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\Game-Program\\Class4th (Color System)\\Source.c",
+              "RelativeDocumentMoniker": "..\\Class4th (Color System)\\Source.c",
+              "ToolTip": "C:\\Users\\iheug\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\Game-Program\\Class4th (Color System)\\Source.c",
+              "RelativeToolTip": "..\\Class4th (Color System)\\Source.c",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADAAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2026-01-22T20:34:27.46Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Source.c",
+              "DocumentMoniker": "C:\\Users\\iheug\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\Game-Program\\Class3th (File Input \u0026 Output)\\Source.c",
+              "RelativeDocumentMoniker": "..\\Class3th (File Input \u0026 Output)\\Source.c",
+              "ToolTip": "C:\\Users\\iheug\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\Game-Program\\Class3th (File Input \u0026 Output)\\Source.c",
+              "RelativeToolTip": "..\\Class3th (File Input \u0026 Output)\\Source.c",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2026-01-22T20:01:49.466Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "stdio.h",
               "DocumentMoniker": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stdio.h",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stdio.h",
