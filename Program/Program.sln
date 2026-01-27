@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="../Class1th (Input System)/Class1th (Input System).vcxproj" Id="514607e2-0815-42b4-962b-3fb99c043f77" />
+  <Project Path="../Class2th (Time)/Class2th (Time).vcxproj" Id="f2a335f9-1292-477b-9f49-de34a2fd901a" />
+  <Project Path="../Class3th (File Input &amp; Output)/Class3th (File Input &amp; Output).vcxproj" Id="4d1470a5-2dfb-4e78-9d16-ac9059287aa8" />
+  <Project Path="../Class4th (Color System)/Class4th (Color System).vcxproj" Id="20a791f9-e446-4811-bccd-19aac7a42d8f" />
+  <Project Path="../Game/Game.vcxproj" Id="7c345a29-26e0-42c0-b38c-7c913588b6cb" />
+  <Project Path="Program.vcxproj" Id="53b474c2-71f2-405f-b4b5-2015d97b39a2" />
+</Solution>
