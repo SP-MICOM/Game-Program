@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <windows.h>
 #include <string.h>
+#include <math.h>
 
 #define UP 72
 #define LEFT 75
@@ -10,9 +11,24 @@
 #define Z 122
 #define X 120
 
-
 int screenIndex;
 HANDLE screen[2];
+
+struct Cursor
+{
+	int x;
+	int y;
+};
+
+struct obj_1
+{
+	int x;
+	int y;
+	int HP;
+	int ATK;
+	int ACC;
+	int MOV;
+};
 
 void Initialize()
 {
@@ -81,26 +97,10 @@ void Render(int x, int y, const char* character)
 	WriteFile(screen[screenIndex], character, strlen(character), &dword, NULL);
 }
 
-struct Cursor
-{
-	int x;
-	int y;
-};
-
-struct obj_1
-{
-	int x;
-	int y;
-	int HP;
-	int ATK;
-	int ACC;
-	int MOV;
-};
-
 int main()
 {
-	struct Cursor cursor = { 0, 0 };
-	struct obj_1 warrier = { 6, 6, 20, 5, 90, 4 };
+	struct Cursor cursor = { 4, 2 };
+	struct obj_1 warrier = { 10, 6, 20, 5, 90, 3 };
 	
 	char key = 0;
 
@@ -133,54 +133,104 @@ int main()
 			key = _getch();
 		}
 	
-		switch (key)
+		if (mover == 0) // 미선택 커서 이동
 		{
-		case UP: if (cursor.y > 0) { cursor.y--; }
-			   break;
-
-		case LEFT: if (cursor.x > 0) { cursor.x -= 2; }
-				 break;
-
-		case RIGHT: if (width > cursor.x) { cursor.x += 2; }
-				  break;
-
-		case DOWN: if (height > cursor.y) { cursor.y++; }
-				 break;
-
-		case Z:
-			if ((select == 1) && (mover == 0)) { mover = 1; }
-			else if ((select == 1) && (mover == 1))
+			switch (key)
 			{
-				select = 0;
+			case UP: if (cursor.y > 0) { cursor.y--; }
+				   break;
+
+			case LEFT: if (cursor.x > 0) { cursor.x -= 2; }
+					 break;
+
+			case RIGHT: if (width > cursor.x) { cursor.x += 2; }
+					  break;
+
+			case DOWN: if (height > cursor.y) { cursor.y++; }
+					 break;
+
+			case Z:
+				if ((select == 1) && (mover == 0)) { mover = 1; }
+				else if ((select == 1) && (mover == 1))
+				{
+					select = 0;
+					mover = 0;
+				}
+					 break;
+
+			case X: if (mover == 1) { mover = 0; }
+					 break;
+
+			default: printf("exception\n");
+				break;
+			}
+		}
+		else if (mover == 1)
+		{
+			int nextX = cursor.x;
+			int nextY = cursor.y;
+
+			switch (key)
+			{
+			case UP: nextY--; 
+				break;
+
+			case DOWN: nextY++; 
+				break;
+
+			case LEFT: nextX -= 2; 
+				break;
+
+			case RIGHT: nextX += 2; 
+				break;
+
+			case Z:
+				mover = 0;
+				warrier.x = cursor.x;
+				warrier.y = cursor.y;
+
+			case X:
 				mover = 0;
 			}
-				 break;
 
-		case X: if (mover == 1) { mover = 0; }
-				 break;
+			// 워리어 기준 거리 계산
+			int dx = abs((nextX - warrier.x) / 2);
+			int dy = abs(nextY - warrier.y);
 
-		default: printf("exception\n");
-			break;
+			// 마름모 범위 안이면 이동 허용
+			if (dx + dy <= warrier.MOV)
+			{
+				cursor.x = nextX;
+				cursor.y = nextY;
+			}
 		}
 
+		
 		Render(cursor.x, cursor.y, "▼");
 
-		if ((cursor.x == warrier.x) && (cursor.y == warrier.y))
+		if (((cursor.x == warrier.x) && (cursor.y == warrier.y)) && (mover == 0))
 		{
-			if (mover == 1)
-			{
-				Render(warrier.x, warrier.y, "◎");
-
-				for (int i = warrier.MOV; i > 0; i--)
-				{
-					Render(warrier.x + i * 2, warrier.y, "□");
-					Render(warrier.x - i * 2, warrier.y, "□");
-					Render(warrier.x, warrier.y - i, "□");
-					Render(warrier.x, warrier.y + i, "□");
-				}
-			}
-			else {Render(warrier.x, warrier.y, "●");}
+			Render(warrier.x, warrier.y, "●");
 			select = 1;
+		}
+		else if (mover == 1)
+		{
+			if ((cursor.x == warrier.x) && (cursor.y == warrier.y)) { Render(warrier.x, warrier.y, "●"); }
+			else { Render(warrier.x, warrier.y, "◎"); }
+
+			for (int iy = warrier.MOV; iy >= -warrier.MOV; iy--) // 이동범위 렌더
+				{
+					int remain = warrier.MOV - abs(iy);
+
+					for (int ix = -remain; ix <= remain; ix++)
+					{
+						if (!((ix == 0) && (iy == 0)))
+						{
+							if ((warrier.x + ix * 2 == cursor.x) && (warrier.y + iy == cursor.y)) { Render(warrier.x + ix * 2, warrier.y + iy, "■"); }
+							else { Render(warrier.x + ix * 2, warrier.y + iy, "□"); }
+						}
+					}
+				}
 		}
 		else
 		{
