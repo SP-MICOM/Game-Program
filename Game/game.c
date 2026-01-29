@@ -14,13 +14,29 @@
 int screenIndex;
 HANDLE screen[2];
 
+struct MAP
+{
+	int x;
+	int y;
+	int width;
+	int height;
+};
+
+struct SYSTEM
+{
+	int x;
+	int y;
+	int width;
+	int height;
+};
+
 struct Cursor
 {
 	int x;
 	int y;
 };
 
-struct obj_1
+struct Warrier
 {
 	int x;
 	int y;
@@ -29,6 +45,17 @@ struct obj_1
 	int ACC;
 	int MOV;
 };
+
+struct Enemy1
+{
+	int x;
+	int y;
+	int HP;
+	int ATK;
+	int ACC;
+	int MOV;
+};
+
 
 void Initialize()
 {
@@ -97,11 +124,47 @@ void Render(int x, int y, const char* character)
 	WriteFile(screen[screenIndex], character, strlen(character), &dword, NULL);
 }
 
+void RenderMap(int x, int y, int width, int height)
+{
+	// 위/아래
+	for (int ix = 0; ix <= width; ix += 2)
+	{
+		Render(x + ix, y, "※");
+		Render(x + ix, y + height, "※");
+	}
+
+	// 좌/우
+	for (int iy = 0; iy <= height; iy++)
+	{
+		Render(x, iy + y, "※");
+		Render(x + width, iy + y, "※");
+	}
+}
+
+void RenderSYSM(int x, int y, int width, int height)
+{
+	for (int ix = 0; ix <= width; ix++)
+	{
+		Render(x + ix, y, "※");
+		Render(x + ix, y + height, "※");
+
+	}
+
+	for (int iy = 0; iy <= height; iy++)
+	{
+		Render(x, y + iy, "※");
+		Render(x + width, y + iy, "※");
+	}
+}
+
 int main()
 {
 	struct Cursor cursor = { 4, 2 };
-	struct obj_1 warrier = { 10, 6, 20, 5, 90, 3 };
-	
+	struct Warrier warrier = { 10, 6, 20, 5, 90, 3 };
+	struct Enemy1 enemy1 = { 20, 16, 20, 5, 90, 3 };
+	struct MAP map = { 2, 1 , 60, 20 };
+	struct SYSTEM sysm = { map.width + 6, map.y, 30, map.height };
+
 	char key = 0;
 
 	CONSOLE_SCREEN_BUFFER_INFO console;
@@ -123,6 +186,9 @@ int main()
 
 	while (1)
 	{
+		RenderMap(map.x, map.y, map.width, map.height);
+		RenderSYSM(sysm.x, sysm.y, sysm.width, sysm.height);
+
 		// 커서 이동
 		Flip();
 		Clear();
@@ -133,20 +199,21 @@ int main()
 			key = _getch();
 		}
 	
+		//커서 이동
 		if (mover == 0) // 미선택 커서 이동
 		{
 			switch (key)
 			{
-			case UP: if (cursor.y > 0) { cursor.y--; }
+			case UP: if (cursor.y > map.y + 1) { cursor.y--; }
 				   break;
 
-			case LEFT: if (cursor.x > 0) { cursor.x -= 2; }
+			case LEFT: if (cursor.x > map.x + 2) { cursor.x -= 2; }
 					 break;
 
-			case RIGHT: if (width > cursor.x) { cursor.x += 2; }
+			case RIGHT: if (cursor.x < map.width) { cursor.x += 2; }
 					  break;
 
-			case DOWN: if (height > cursor.y) { cursor.y++; }
+			case DOWN: if (cursor.y < map.height) { cursor.y++; }
 					 break;
 
 			case Z:
@@ -172,16 +239,16 @@ int main()
 
 			switch (key)
 			{
-			case UP: nextY--; 
+			case UP: if (cursor.y > map.y + 1) { nextY--; }
 				break;
 
-			case DOWN: nextY++; 
+			case DOWN: if (cursor.y < map.height) { nextY++; }
 				break;
 
-			case LEFT: nextX -= 2; 
+			case LEFT: if (cursor.x > map.x + 2) { nextX -= 2; }
 				break;
 
-			case RIGHT: nextX += 2; 
+			case RIGHT: if (cursor.x < map.width) { nextX += 2; }
 				break;
 
 			case Z:
@@ -204,10 +271,10 @@ int main()
 				cursor.y = nextY;
 			}
 		}
-
 		
 		Render(cursor.x, cursor.y, "▼");
 
+		// 전사 이동
 		if (((cursor.x == warrier.x) && (cursor.y == warrier.y)) && (mover == 0))
 		{
 			Render(warrier.x, warrier.y, "●");
@@ -226,8 +293,11 @@ int main()
 					{
 						if (!((ix == 0) && (iy == 0)))
 						{
-							if ((warrier.x + ix * 2 == cursor.x) && (warrier.y + iy == cursor.y)) { Render(warrier.x + ix * 2, warrier.y + iy, "■"); }
-							else { Render(warrier.x + ix * 2, warrier.y + iy, "□"); }
+							if ((warrier.x + ix * 2 > 0) && (warrier.y + iy > 0))
+							{
+								 if ((warrier.x + ix * 2 == cursor.x) && (warrier.y + iy == cursor.y)) { Render(warrier.x + ix * 2, warrier.y + iy, "■"); }
+								 else { Render(warrier.x + ix * 2, warrier.y + iy, "□"); }
+							}
 						}
 					}
 				}
@@ -237,6 +307,8 @@ int main()
 			Render(warrier.x, warrier.y, "○");
 			select = 0;
 		}
+
+		Render(enemy1.x, enemy1.y, "★");
 	}
 
 	return 0;
