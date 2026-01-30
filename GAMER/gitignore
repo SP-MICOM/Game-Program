@@ -1,0 +1,9 @@
+# Visual Studio
+*.ilk
+*.pdb
+.vs/
+Debug/
+Release/
+x64/
+x86/
+vc143*

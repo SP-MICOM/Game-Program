@@ -20,7 +20,17 @@ struct Cursor
 	int y;
 };
 
-struct obj_1
+struct Warrier
+{
+	int x;
+	int y;
+	int HP;
+	int ATK;
+	int ACC;
+	int MOV;
+};
+
+struct Enemy1
 {
 	int x;
 	int y;
@@ -100,7 +110,8 @@ void Render(int x, int y, const char* character)
 int main()
 {
 	struct Cursor cursor = { 4, 2 };
-	struct obj_1 warrier = { 10, 6, 20, 5, 90, 3 };
+	struct Warrier warrier = { 10, 6, 20, 5, 90, 3 };
+	struct Enemy1 enemy = { 28, 10, 20, 5, 90, 3 };
 	
 	char key = 0;
 
@@ -117,95 +128,109 @@ int main()
 	
 	Render(cursor.x, cursor.y, "▼");
 	Render(warrier.x, warrier.y, "○");
+	Render(enemy.x, enemy.y, "☆");
 
 	int select = 0; // 커서가 오브젝트 위에 있는지 여부
 	int mover = 0;	// 커서가 오브젝트를 선택했는지 여부
+	int turn = 0; 
+
+	srand(time(NULL));
 
 	while (1)
 	{
 		// 커서 이동
 		Flip();
 		Clear();
-		key = _getch();
 
-		if (key == -32 || key == 0)
-		{
+		if (_kbhit())
+		{	
 			key = _getch();
-		}
-	
-		if (mover == 0) // 미선택 커서 이동
-		{
-			switch (key)
+			
+			if (key == -32 || key == 0)
 			{
-			case UP: if (cursor.y > 0) { cursor.y--; }
-				   break;
+				key = _getch();
+			}
 
-			case LEFT: if (cursor.x > 0) { cursor.x -= 2; }
-					 break;
+			if (mover == 0) // 미선택 커서 이동
+			{
+				switch (key)
+				{
+				case UP: if (cursor.y > 0) { cursor.y--; }
+					   break;
 
-			case RIGHT: if (width > cursor.x) { cursor.x += 2; }
+				case LEFT: if (cursor.x > 0) { cursor.x -= 2; }
+						 break;
+
+				case RIGHT: if (width > cursor.x) { cursor.x += 2; }
+						  break;
+
+				case DOWN: if (height > cursor.y) { cursor.y++; }
+						 break;
+
+				case Z:
+					if ((select == 1) && (mover == 0)) { mover = 1; }
+					else if ((select == 1) && (mover == 1))
+					{
+						select = 0;
+						mover = 0;
+					}
+					break;
+
+				case X: if (mover == 1) { mover = 0; }
 					  break;
 
-			case DOWN: if (height > cursor.y) { cursor.y++; }
-					 break;
-
-			case Z:
-				if ((select == 1) && (mover == 0)) { mover = 1; }
-				else if ((select == 1) && (mover == 1))
-				{
-					select = 0;
-					mover = 0;
+				default: printf("exception\n");
+					break;
 				}
-					 break;
-
-			case X: if (mover == 1) { mover = 0; }
-					 break;
-
-			default: printf("exception\n");
-				break;
 			}
-		}
-		else if (mover == 1)
-		{
-			int nextX = cursor.x;
-			int nextY = cursor.y;
-
-			switch (key)
+			else if (mover == 1)
 			{
-			case UP: nextY--; 
-				break;
+				int nextX = cursor.x;
+				int nextY = cursor.y;
 
-			case DOWN: nextY++; 
-				break;
+				switch (key)
+				{
+				case UP: nextY--;
+					break;
 
-			case LEFT: nextX -= 2; 
-				break;
+				case DOWN: nextY++;
+					break;
 
-			case RIGHT: nextX += 2; 
-				break;
+				case LEFT: nextX -= 2;
+					break;
 
-			case Z:
-				mover = 0;
-				warrier.x = cursor.x;
-				warrier.y = cursor.y;
+				case RIGHT: nextX += 2;
+					break;
 
-			case X:
-				mover = 0;
+				case Z:
+					warrier.x = cursor.x;
+					warrier.y = cursor.y;
+					turn = 1;
+					mover = 0;
+					break;
+
+				case X:
+					mover = 0;
+					break;
+				}
+
+				// 워리어 기준 거리 계산
+				int dx = abs((nextX - warrier.x) / 2);
+				int dy = abs(nextY - warrier.y);
+
+				// 마름모 범위 안이면 이동 허용
+				if ((dx + dy <= warrier.MOV))
+				{
+					if ((nextX != enemy.x) || (nextY != enemy.y))
+					{
+						cursor.x = nextX;
+						cursor.y = nextY;
+					}
+				}
 			}
 
-			// 워리어 기준 거리 계산
-			int dx = abs((nextX - warrier.x) / 2);
-			int dy = abs(nextY - warrier.y);
-
-			// 마름모 범위 안이면 이동 허용
-			if (dx + dy <= warrier.MOV)
-			{
-				cursor.x = nextX;
-				cursor.y = nextY;
-			}
 		}
 
-		
 		Render(cursor.x, cursor.y, "▼");
 
 		if (((cursor.x == warrier.x) && (cursor.y == warrier.y)) && (mover == 0))
@@ -237,6 +262,57 @@ int main()
 			Render(warrier.x, warrier.y, "○");
 			select = 0;
 		}
+
+		// 적 (수정 필요)
+		if (((cursor.x == enemy.x) && (cursor.y == enemy.y)))
+		{
+			Render(enemy.x, enemy.y, "★");
+		}
+		else
+		{
+			Render(enemy.x, enemy.y, "☆");
+		}
+		if (turn == 1)
+		{
+			int nextX = 0;
+			int nextY = 0;
+			
+		AGAIN :
+			nextX = rand() % ((enemy.MOV * 2) + 1);
+			nextY = rand() % ((enemy.MOV * 2) + 1);
+
+			if (nextX >= enemy.MOV)
+			{
+				nextX -= enemy.MOV * 2;
+			}
+
+			if (nextY >= enemy.MOV)
+			{
+				nextY -= enemy.MOV * 2;
+			}
+
+			if ((nextX != warrier.x) || (nextY != warrier.y))
+			{
+				if ((enemy.x + nextX * 2 > 0) || (enemy.y + nextY > 0))
+				{
+					enemy.x += nextX * 2;
+					enemy.y += nextY;
+				}
+				else
+				{
+					goto AGAIN;
+				}
+			}
+			else
+			{
+				goto AGAIN;
+			}
+			
+
+			turn = 0;
+		}
+
+
 	}
 
 	return 0;
