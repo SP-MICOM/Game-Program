@@ -1,0 +1,9 @@
+# Visual Studio / Debug 빌드 파일
+x64/Debug/
+GAMER/x64/Debug/
+*.ilk
+*.log
+*.obj
+*.idb
+*.pdb
+*.exe
