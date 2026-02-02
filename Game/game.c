@@ -56,7 +56,6 @@ struct Enemy1
 	int MOV;
 };
 
-
 void Initialize()
 {
 	CONSOLE_CURSOR_INFO cursor;
