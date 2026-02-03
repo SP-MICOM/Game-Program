@@ -62,7 +62,6 @@ void Initialize()
 {
 	CONSOLE_CURSOR_INFO cursor;
 
-	// 화면 버퍼를 2개 생성합니다.
 	screen[0] = CreateConsoleScreenBuffer
 	(
 		GENERIC_READ | GENERIC_WRITE,
@@ -127,14 +126,12 @@ void Render(int x, int y, const char* character)
 
 void RenderMap(int x, int y, int width, int height)
 {
-	// 위/아래
 	for (int ix = 0; ix <= width; ix += 2)
 	{
 		Render(x + ix, y, "※");
 		Render(x + ix, y + height, "※");
 	}
 
-	// 좌/우
 	for (int iy = 0; iy <= height; iy++)
 	{
 		Render(x, iy + y, "※");
@@ -158,8 +155,6 @@ void RenderSYSM(int x, int y, int width, int height)
 	}
 }
 
-<<<<<<< Updated upstream
-=======
 int Where(int x, int y, int ex, int ey, struct MAP map)
 {
 	if (x == ex && y == ey) return 0;
@@ -168,18 +163,13 @@ int Where(int x, int y, int ex, int ey, struct MAP map)
 	return 1;
 }
 
->>>>>>> Stashed changes
 int main()
 {
 	struct Cursor cursor = { 4, 2 };
 	struct Warrier warrier = { 10, 6, 20, 5, 90, 3 };
-<<<<<<< Updated upstream
-	struct Enemy1 enemy1 = { 20, 16, 20, 5, 90, 3 };
-=======
 	struct Enemy1 enemy = { 28, 10, 20, 5, 90, 3 };
->>>>>>> Stashed changes
 	struct MAP map = { 2, 1 , 60, 20 };
-	struct SYSTEM sysm = { map.width + 6, map.y, 30, map.height };
+	// struct SYSTEM sysm = { map.width + 6, map.y, 6, map.height };
 
 	char key = 0;
 
@@ -193,19 +183,20 @@ int main()
 	int height = console.srWindow.Bottom - console.srWindow.Top;
 
 	Initialize();
-	
+
 	Render(cursor.x, cursor.y, "▼");
 	Render(warrier.x, warrier.y, "○");
+	Render(enemy.x, enemy.y, "☆");
 
-	int select = 0; // 커서가 오브젝트 위에 있는지 여부
-	int mover = 0;	// 커서가 오브젝트를 선택했는지 여부
+	int select = 0;
+	int mover = 0;
+	int turn = 0;
 
 	while (1)
 	{
 		RenderMap(map.x, map.y, map.width, map.height);
-		RenderSYSM(sysm.x, sysm.y, sysm.width, sysm.height);
+		// RenderSYSM(sysm.x, sysm.y, sysm.width, sysm.height);
 
-		// 커서 이동
 		Flip();
 		Clear();
 		key = _getch();
@@ -214,48 +205,18 @@ int main()
 		{
 			key = _getch();
 		}
-	
-		//커서 이동
-		if (mover == 0) // 미선택 커서 이동
+
+		if (mover == 0)
 		{
 			switch (key)
 			{
 			case UP: if (cursor.y > map.y + 1) { cursor.y--; }
 				   break;
 
-<<<<<<< Updated upstream
 			case LEFT: if (cursor.x > map.x + 2) { cursor.x -= 2; }
 					 break;
 
 			case RIGHT: if (cursor.x < map.width) { cursor.x += 2; }
-=======
-			if (mover == 0) // 미선택 커서 이동
-			{
-				switch (key)
-				{
-				case UP: if (cursor.y > map.y + 1) { cursor.y--; }
-					   break;
-
-				case LEFT: if (cursor.x > map.x + 2) { cursor.x -= 2; }
-						 break;
-
-				case RIGHT: if (cursor.x < map.width) { cursor.x += 2; }
-						  break;
-
-				case DOWN: if (cursor.y < map.height) { cursor.y++; }
-						 break;
-
-				case Z:
-					if ((select == 1) && (mover == 0)) { mover = 1; }
-					else if ((select == 1) && (mover == 1))
-					{
-						select = 0;
-						mover = 0;
-					}
-					break;
-
-				case X: if (mover == 1) { mover = 0; }
->>>>>>> Stashed changes
 					  break;
 
 			case DOWN: if (cursor.y < map.height) { cursor.y++; }
@@ -265,33 +226,13 @@ int main()
 				if ((select == 1) && (mover == 0)) { mover = 1; }
 				else if ((select == 1) && (mover == 1))
 				{
-<<<<<<< Updated upstream
 					select = 0;
-=======
-				case UP: if (cursor.y > map.y + 1) { nextY--; }
-					   break;
-
-				case DOWN: if (cursor.y < map.height) { nextY++; }
-						 break;
-
-				case LEFT: if (cursor.x > map.x + 2) { nextX -= 2; }
-						 break;
-
-				case RIGHT: if (cursor.x < map.width) { nextX += 2; }
-						  break;
-
-				case Z:
-					mover = 0;
-					warrier.x = cursor.x;
-					warrier.y = cursor.y;
-					turn = 1;
->>>>>>> Stashed changes
 					mover = 0;
 				}
-					 break;
+				break;
 
 			case X: if (mover == 1) { mover = 0; }
-					 break;
+				  break;
 
 			default: printf("exception\n");
 				break;
@@ -305,41 +246,41 @@ int main()
 			switch (key)
 			{
 			case UP: if (cursor.y > map.y + 1) { nextY--; }
-				break;
+				   break;
 
 			case DOWN: if (cursor.y < map.height) { nextY++; }
-				break;
+					 break;
 
 			case LEFT: if (cursor.x > map.x + 2) { nextX -= 2; }
-				break;
+					 break;
 
 			case RIGHT: if (cursor.x < map.width) { nextX += 2; }
-				break;
+					  break;
 
 			case Z:
 				mover = 0;
 				warrier.x = cursor.x;
 				warrier.y = cursor.y;
+				turn = 1;
+				break;
 
 			case X:
 				mover = 0;
+				break;
 			}
 
-			// 워리어 기준 거리 계산
 			int dx = abs((nextX - warrier.x) / 2);
 			int dy = abs(nextY - warrier.y);
 
-			// 마름모 범위 안이면 이동 허용
-			if (dx + dy <= warrier.MOV)
+			if ((dx + dy <= warrier.MOV) && (nextX != enemy.x || nextY != enemy.y))
 			{
 				cursor.x = nextX;
 				cursor.y = nextY;
 			}
 		}
-		
+
 		Render(cursor.x, cursor.y, "▼");
 
-		// 전사 이동
 		if (((cursor.x == warrier.x) && (cursor.y == warrier.y)) && (mover == 0))
 		{
 			Render(warrier.x, warrier.y, "●");
@@ -350,27 +291,22 @@ int main()
 			if ((cursor.x == warrier.x) && (cursor.y == warrier.y)) { Render(warrier.x, warrier.y, "●"); }
 			else { Render(warrier.x, warrier.y, "◎"); }
 
-			for (int iy = warrier.MOV; iy >= -warrier.MOV; iy--) // 이동범위 렌더
-				{
-					int remain = warrier.MOV - abs(iy);
+			for (int iy = warrier.MOV; iy >= -warrier.MOV; iy--)
+			{
+				int remain = warrier.MOV - abs(iy);
 
-					for (int ix = -remain; ix <= remain; ix++)
+				for (int ix = -remain; ix <= remain; ix++)
+				{
+					if (!((ix == 0) && (iy == 0)))
 					{
-						if (!((ix == 0) && (iy == 0)))
+						if ((warrier.x + ix * 2 > 0) && (warrier.y + iy > 0))
 						{
-							if ((warrier.x + ix * 2 > 0) && (warrier.y + iy > 0))
-							{
-<<<<<<< Updated upstream
-								 if ((warrier.x + ix * 2 == cursor.x) && (warrier.y + iy == cursor.y)) { Render(warrier.x + ix * 2, warrier.y + iy, "■"); }
-								 else { Render(warrier.x + ix * 2, warrier.y + iy, "□"); }
-=======
-								if ((warrier.x + ix * 2 == cursor.x) && (warrier.y + iy == cursor.y)) { Render(warrier.x + ix * 2, warrier.y + iy, "■"); }
-								else { Render(warrier.x + ix * 2, warrier.y + iy, "□"); }
->>>>>>> Stashed changes
-							}
+							if ((warrier.x + ix * 2 == cursor.x) && (warrier.y + iy == cursor.y)) { Render(warrier.x + ix * 2, warrier.y + iy, "■"); }
+							else { Render(warrier.x + ix * 2, warrier.y + iy, "□"); }
 						}
 					}
 				}
+			}
 		}
 		else
 		{
@@ -378,10 +314,6 @@ int main()
 			select = 0;
 		}
 
-<<<<<<< Updated upstream
-		Render(enemy1.x, enemy1.y, "★");
-=======
-		// 적 (수정 필요)
 		if (((cursor.x == enemy.x) && (cursor.y == enemy.y)))
 		{
 			Render(enemy.x, enemy.y, "★");
@@ -394,23 +326,23 @@ int main()
 		{
 			int nextX = 0;
 			int nextY = 0;
-			
+
 			while (1)
 			{
 				nextX = rand() % ((enemy.MOV * 2 + 1));
 				nextY = rand() % ((enemy.MOV * 2 + 1));
-				
+
 				if (nextX >= enemy.MOV)
 				{
 					nextX -= enemy.MOV * 2;
 				}
-				
+
 				if (nextY >= enemy.MOV)
 				{
 					nextY -= enemy.MOV * 2;
 				}
-				
-				if (Where(enemy.x + (nextX * 2), enemy.y + nextY, warrier.x, warrier.y, map) == 1)
+
+				if (Where(enemy.x + nextX * 2, enemy.y + nextY, warrier.x, warrier.y, map) == 1)
 				{
 					enemy.x += nextX * 2;
 					enemy.y += nextY;
@@ -419,7 +351,6 @@ int main()
 				}
 			}
 		}
->>>>>>> Stashed changes
 	}
 
 	return 0;
