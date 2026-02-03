@@ -1,0 +1,4 @@
+﻿  game.c
+C:\Users\Administrator\Desktop\Game-Program\game\game.c(124,44): warning C4267: '함수': 'size_t'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+LINK : warning LNK4075: '/INCREMENTAL'이(가) '/OPT:ICF' 사양으로 인해 무시됩니다.
+  GAMER.vcxproj -> C:\Users\Administrator\Desktop\Game-Program\x64\Release\GAMER.exe

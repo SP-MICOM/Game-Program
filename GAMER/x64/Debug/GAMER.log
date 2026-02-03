@@ -1,3 +1,5 @@
 ﻿  game.c
-C:\Users\Administrator\Desktop\Game-Program\game\game.c(124,44): warning C4267: '함수': 'size_t'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\Game-Program\game\game.c(55,36): warning C4267: '함수': 'size_t'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\Game-Program\game\game.c(91,2): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Administrator\Desktop\Game-Program\game\game.c(93,2): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   GAMER.vcxproj -> C:\Users\Administrator\Desktop\Game-Program\x64\Debug\GAMER.exe
